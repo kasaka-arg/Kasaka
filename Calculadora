@@ -340,14 +340,16 @@
     });
 
     // Copiar
-    els.copy.addEventListener('click', ()=>{
+    const elsCopy = () => {
+      if (!navigator.clipboard) return alert('Clipboard no soportado');
+    };
+    (els.copy||{}).addEventListener?.('click', ()=>{
       navigator.clipboard.writeText(els.total.textContent).then(()=>{
         els.copy.textContent = 'Copiado';
         setTimeout(()=> els.copy.textContent = 'Copiar total', 1500);
       });
     });
-
-    els.copyBoth.addEventListener('click', ()=>{
+    (els.copyBoth||{}).addEventListener?.('click', ()=>{
       const usd = els.total.textContent;
       const ars = els.total_ars.textContent !== '—' ? ` · ${els.total_ars.textContent}` : '';
       navigator.clipboard.writeText(`${usd}${ars}`).then(()=>{
