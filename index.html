@@ -8,9 +8,9 @@
     :root{
       --bg:#002c2c;
       --panel:#002c2c;
-      --muted:#ccc; 
+      --muted:#ccc; /* tono claro de apoyo */
       --text:#fff4e6;
-      --accent:#fff4e6; 
+      --accent:#fff4e6; /* botones en contraste */
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu;background:var(--bg);color:var(--text)}
@@ -39,6 +39,27 @@
     .footer{padding:16px 20px;display:flex;flex-direction:column;gap:10px;color:var(--muted);font-size:12px;line-height:1.5}
     .fx{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:end}
     @media (max-width:720px){.fx{grid-template-columns:1fr}}
+
+    /* Barra de enlaces */
+    .social-bar{
+      background:#001f1f;
+      border-top:1px solid #0f2f2f;
+      padding:14px 16px;
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+    .social-bar a{
+      color:#fff4e6;
+      font-weight:600;
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:8px;
+      background:#004040;
+      transition:transform .15s ease, background .2s ease;
+    }
+    .social-bar a:hover{ background:#185656; transform:translateY(-1px); }
   </style>
 </head>
 <body>
@@ -49,6 +70,7 @@
         <h1>Calculadora de precios – Camisetas</h1>
       </header>
 
+      <!-- Barra principal de texto -->
       <div class="bar">
         <label for="descripcion" class="hint" style="min-width:130px;margin:0">Descripción</label>
         <input id="descripcion" type="text" placeholder="Ej: Boca Local 24/25" />
@@ -88,6 +110,7 @@
           <label for="talle">Talle</label>
           <select id="talle">
             <option value="">(Elegir)</option>
+            <option value="XS">XS</option>
             <option value="S">S</option>
             <option value="M">M</option>
             <option value="L">L</option>
@@ -128,7 +151,6 @@
           </div>
         </div>
 
-        <!-- Dejamos este contenedor vacío a propósito: ya no hay tipo de cambio -->
         <div class="fx"></div>
       </div>
 
@@ -155,6 +177,13 @@
         <div>• Parches: <b>SI +1</b>.</div>
         <div>• Gastos variados (USD): <b>3,75</b>.</div>
         <div>• Todos los valores en <b>USD</b>.</div>
+      </div>
+
+      <!-- Barra de enlaces -->
+      <div class="social-bar">
+        <a href="https://tu-pagina-web.com" target="_blank" rel="noopener">🌐 Web</a>
+        <a href="https://instagram.com/tuusuario" target="_blank" rel="noopener">📸 Instagram</a>
+        <a href="https://wa.me/549XXXXXXXXXX" target="_blank" rel="noopener">💬 WhatsApp</a>
       </div>
     </div>
   </div>
@@ -185,36 +214,6 @@
       }
       return 0;
     }
-
-    <!-- Barra de enlaces -->
-<div class="social-bar">
-  <a href="https://tu-pagina-web.com" target="_blank">🌐 Web</a>
-  <a href="https://www.instagram.com/__kasaka__/" target="_blank">📸 Instagram</a>
-  <a href="https://wa.me/549XXXXXXXXXX" target="_blank">💬 WhatsApp</a>
-</div>
-
-<style>
-  .social-bar {
-    background:#001f1f;
-    border-top:1px solid #0f2f2f;
-    padding:14px;
-    display:flex;
-    justify-content:center;
-    gap:20px;
-  }
-  .social-bar a {
-    color:#fff4e6;
-    font-weight:600;
-    text-decoration:none;
-    padding:8px 12px;
-    border-radius:8px;
-    background:#004040;
-    transition:0.3s;
-  }
-  .social-bar a:hover {
-    background:#185656;
-  }
-</style>
 
     function extraTalle(talle) {
       return (talle === "2XL" || talle === "3XL" || talle === "4XL") ? 1 : 0;
