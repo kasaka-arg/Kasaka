@@ -8,9 +8,9 @@
     :root{
       --bg:#002c2c;
       --panel:#002c2c;
-      --muted:#ccc; /* tono claro de apoyo */
+      --muted:#ccc; 
       --text:#fff4e6;
-      --accent:#fff4e6; /* botones en contraste */
+      --accent:#fff4e6; 
     }
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu;background:var(--bg);color:var(--text)}
@@ -49,7 +49,6 @@
         <h1>Calculadora de precios – Camisetas</h1>
       </header>
 
-      <!-- Barra principal de texto -->
       <div class="bar">
         <label for="descripcion" class="hint" style="min-width:130px;margin:0">Descripción</label>
         <input id="descripcion" type="text" placeholder="Ej: Boca Local 24/25" />
@@ -130,9 +129,8 @@
           </div>
         </div>
 
-        <div class="fx">
-          </div>
-        </div>
+        <!-- Dejamos este contenedor vacío a propósito: ya no hay tipo de cambio -->
+        <div class="fx"></div>
       </div>
 
       <div class="total">
@@ -172,13 +170,11 @@
       camposExtras: $("camposExtras"), dorsalInfo: $("dorsalInfo"),
       parches: $("parches"), parcheBox: $("parcheBox"), parcheTexto: $("parcheTexto"),
       total: $("total"), v_base: $("v_base"), v_extras: $("v_extras"), v_gastos: $("v_gastos"),
-      tag: $("tag"), copy: $("copy"), copyBoth: $("copyBoth"),
-      fx: $("fx"), total_ars: $("total_ars")
+      tag: $("tag"), copy: $("copy")
     };
 
     const formatUSD = (n) => 'US$ ' + n.toLocaleString('es-AR',{minimumFractionDigits:2, maximumFractionDigits:2});
     const formatUSDSmall = (n) => 'US$ ' + n.toLocaleString('es-AR',{minimumFractionDigits:1, maximumFractionDigits:1});
-    const formatARS = (n) => '$ ' + n.toLocaleString('es-AR',{minimumFractionDigits:0, maximumFractionDigits:0});
 
     function calcBase(marca, version, temporada) {
       if (temporada === "Retro") return 15;
@@ -205,8 +201,8 @@
       const talle     = els.talle.value;
       const dorsal    = els.dorsal.value;
       const parches   = els.parches.value;
-      const fxRate    = parseFloat(els.fx.value || "0");
 
+      // Dinámica de selects
       if (temporada === 'Retro') {
         els.version.disabled = true;
         els.marca.disabled = true;
@@ -218,6 +214,7 @@
         if (version === 'Fan') els.marca.value = "";
       }
 
+      // Cálculos
       const base   = calcBase(marca, version, temporada);
       let extras   = 0;
       if (dorsal === 'Jugador') extras += 1;
@@ -225,33 +222,23 @@
       if (parches === 'SI') extras += 1;
       extras += extraTalle(talle);
 
-      const gastos = correo + ems;
+      const gastos = correo + ems; // 3,75
       const total  = base + extras + gastos;
 
+      // UI
       els.v_base.textContent   = formatUSD(base);
       els.v_extras.textContent = formatUSD(extras);
       els.v_gastos.textContent = formatUSD(gastos);
       els.total.textContent    = formatUSDSmall(total);
-
-      if (!isNaN(fxRate) && fxRate > 0) {
-        els.total_ars.textContent = formatARS(Math.round(total * fxRate));
-      } else {
-        els.total_ars.textContent = '—';
-      }
     }
 
     ['change','input'].forEach(ev=>{
-      ['descripcion','marca','version','temporada','talle','dorsal','parches','numero','nombre','parcheTexto','fx']
+      ['descripcion','marca','version','temporada','talle','dorsal','parches','numero','nombre','parcheTexto']
         .forEach(id=> document.getElementById(id)?.addEventListener(ev, calc));
     });
 
     document.getElementById('copy').addEventListener('click', ()=>{
       navigator.clipboard.writeText(els.total.textContent);
-    });
-    document.getElementById('copyBoth').addEventListener('click', ()=>{
-      const usd = els.total.textContent;
-      const ars = els.total_ars.textContent !== '—' ? ` · ${els.total_ars.textContent}` : '';
-      navigator.clipboard.writeText(`${usd}${ars}`);
     });
 
     calc();
